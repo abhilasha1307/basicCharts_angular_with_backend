@@ -1,0 +1,13 @@
+mat-button-toggle.mat-button-toggle-checked,
+mat-button-toggle.cdk-focused,
+mat-button-toggle.cdk-mouse-focused {
+  background: #c2d2f7;
+}
+
+h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  padding-left: 10px;
+  font-style: oblique;
+  font-size: large;
+  color: #0a043c;
+}

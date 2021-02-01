@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.foot {
+  background-color: #111d5e;
+  color: #ecf4f3;
+}
+
+mat-drawer {
+  width: 220spx;
+  background-color: #ecf4f3;
+}
+mat-drawer-container {
+  height: 100%;
+}
+
+mat-drawer-content {
+  padding: 20px;
+}

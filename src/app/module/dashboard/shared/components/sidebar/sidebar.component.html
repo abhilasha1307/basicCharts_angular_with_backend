@@ -1,0 +1,25 @@
+<mat-nav-list disableRipple>
+  <h2 MatSubheader>PAGES</h2>
+  <mat-button-toggle-group
+    vertical
+    #group="matButtonToggleGroup"
+    [value]="selectedVal"
+    (change)="onValChange(group.value)"
+  >
+    <mat-button-toggle value="option1" disableRipple>
+      <a mat-list-item routerLink="/" routerLinkActive="router-link-active"
+        >Line Chart</a
+      >
+    </mat-button-toggle>
+    <mat-divider></mat-divider>
+    <mat-button-toggle value="option2" disableRipple
+      ><a
+        mat-list-item
+        routerLink="/posts"
+        routerLinkActive="router-link-active"
+        >Column Chart By The Month</a
+      ></mat-button-toggle
+    >
+  </mat-button-toggle-group>
+  <mat-divider></mat-divider>
+</mat-nav-list>
