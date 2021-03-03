@@ -1,5 +1,8 @@
+import { Series } from './lineChart2';
+import { LineChart2Service } from './line-chart2.service';
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
+
 
 @Component({
   selector: 'app-line-chart2',
@@ -9,9 +12,12 @@ import * as Highcharts from 'highcharts';
 export class LineChart2Component implements OnInit {
   chart!: {};
   highcharts = Highcharts;
-  constructor() { }
+  series!: any;
+  constructor(private resp: LineChart2Service) { }
 
   ngOnInit(): void {
+    this.resp.getAll().subscribe(data => this.series = data);
+
     this.chart = {
       chart: {
       plotBackgroundColor: '#eff8ff',
@@ -57,6 +63,9 @@ export class LineChart2Component implements OnInit {
         title: {
             text: 'Percent(%)'
         },
+        labels: {
+            format: '{value}%'
+        },
         max: 100
     },
 
@@ -69,14 +78,9 @@ export class LineChart2Component implements OnInit {
 
     series: [{
         name: 'Recovery Rate',
+        data: [this.series],
         lineWidth: 5,
-        data: [100, 86.67, 78.13, 91.66, 94.79, 96.10, 97.38, 97.96, 98.30, 98.45, 98.50, 98.53],
         color: '#11698e'
-    }, {
-        name: 'Death Rate',
-        lineWidth: 5,
-        data: [0, 13.33, 21.87, 8.34, 5.21, 3.90, 2.62, 2.04, 1.71, 1.55, 1.50, 1.47],
-        color: '#ff4646'
     }],
   };
     }

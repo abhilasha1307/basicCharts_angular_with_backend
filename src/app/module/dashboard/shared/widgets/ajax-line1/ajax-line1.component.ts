@@ -47,7 +47,8 @@ export class AjaxLine1Component implements OnInit {
         },
         labels: {
             format: '{value}%'
-        }
+        },
+        max: 100
     },
 
     legend: {
