@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { LinechartService } from './line-chart.service';
+import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -7,24 +8,62 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./line-chart.component.css']
 })
 export class LineChartComponent implements OnInit {
+  chartOptions = {};
+  Object = {};
 
-  chartOptions!: {};
-  @Input() data: any = [];
-
-  Highcharts = Highcharts;
-
-
-  constructor() { }
+  constructor(private service: LinechartService) { }
 
   ngOnInit(): void {
-    this.chartOptions = {
+    this.service.getAll_4().subscribe(data=> {
+    this.Object = data;
+    this.$formChart(this.Object)});
+    }
 
+    $formChart(object: any)
+  {
+
+    let order= [];
+    for(var i = 0; i<object.length;i++)
+    {
+      order[i] = Object.entries(object[i]).sort();
+    }
+
+    var Cname = [];
+    var Array = [];
+
+    for(var i = 0; i<order.length; i++)
+    {
+      Cname[i] = order[i][0][1];
+    }
+
+    for(var i = 0; i<order.length; i++)
+    {
+      Array[i] = order[i][2][1];
+    }
+
+    var length = Cname.length;
+    var series = ""
+    for (var q = 0; q < length; q++) {
+				series += '{ "name": "' + Cname[q] + '",';
+				series += ' "data": [' + Array[q] + ']'+ ' },';
+			}
+
+    var seriesNew: any;
+
+    seriesNew = '[' + series.substr(0, series.length - 1) + ']';
+    //console.log(seriesNew);
+		seriesNew = JSON.parse(seriesNew);
+		//console.log(seriesNew);
+
+
+    this.chartOptions = new Highcharts.Chart({
       chart: {
         borderColor: '#03506f',
         borderWidth: 3,
         plotBackgroundColor: '#eff8ff',
-        width: 700,
-        height: 450
+        width: 600,
+        height: 450,
+        renderTo: 'container2'
       },
 
       credits: {
@@ -64,25 +103,11 @@ export class LineChartComponent implements OnInit {
             label: {
                 connectorAllowed: false
             },
+            lineWidth: 3
         }
     },
 
-    series: [{
-        name: 'China',
-        data: [17, 2870, 3312, 4633, 4634, 4634, 4634, 4634, 4634, 4634, 4634, 4634, 4636]
-    }, {
-        name: 'India',
-        data: [null, null, 32, 1154, 5185, 17410, 36551, 65435, 98708, 122149, 137659, 148774, 153751]
-    }, {
-        name: 'Japan',
-        data: [null, 5, 56, 430, 886, 972, 1001, 1264, 1564, 1744, 2119, 3414, 5158]
-    }, {
-        name: 'Russia',
-        data: [null, null, 9, 1073, 4693, 9320, 13963, 17093, 20722, 27990, 39895, 56425, 70482]
-    }, {
-        name: 'USA',
-        data: [null, null, 5210, 55367, 108439, 129353, 155931, 188113, 212082, 236415, 274294, 354391, 451407]
-    }],
+    series: seriesNew,
 
     responsive: {
         rules: [{
@@ -98,5 +123,6 @@ export class LineChartComponent implements OnInit {
             }
         }]
     }
-  };
-}}
+  })
+  }
+}

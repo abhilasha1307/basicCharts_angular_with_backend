@@ -1,8 +1,7 @@
-import { Series } from './lineChart2';
-import { LineChart2Service } from './line-chart2.service';
-import { Component, OnInit } from '@angular/core';
+import { Linechart2Service } from './line-chart2.service';
+import { Component, OnInit, enableProdMode } from '@angular/core';
+import { map } from 'rxjs/operators';
 import * as Highcharts from 'highcharts';
-
 
 @Component({
   selector: 'app-line-chart2',
@@ -10,15 +9,18 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./line-chart2.component.css']
 })
 export class LineChart2Component implements OnInit {
-  chart!: {};
-  highcharts = Highcharts;
-  series!: any;
-  constructor(private resp: LineChart2Service) { }
+  newChart: Object
+  Object: any
+
+  constructor(private resp: Linechart2Service) { }
 
   ngOnInit(): void {
-    this.resp.getAll().subscribe(data => this.series = data);
+    this.resp.getAll_1().subscribe(data => {
+      this.Object = data
+      this.$function(this.Object)
+    });
 
-    this.chart = {
+  /*this.chart = {
       chart: {
       plotBackgroundColor: '#eff8ff',
       height: (9 / 16 * 100) + '%',
@@ -44,7 +46,7 @@ export class LineChart2Component implements OnInit {
         },
 
     title: {
-        text: 'Outcome of Cases (Recovery or Death) in India'
+        text: 'Outcome of Cases (Recovery) in India'
     },
 
     subtitle: {
@@ -55,7 +57,7 @@ export class LineChart2Component implements OnInit {
       title : {
             text: 'Months'
         },
-          categories: ['Feb 2020', 'Mar 2020', 'Apr 2020', 'May 2020', 'Jun 2020', 'Jul 2020', 'Aug 2020', 'Sep 2020', 'Oct 2020', 'Nov 2020', 'Dec 2020', 'Jan 2021']
+          categories: ['Feb 2020', 'Mar 2020', 'Apr 2020', 'May 2020', 'Jun 2020', 'Jul 2020', 'Aug 2020', 'Sep 2020', 'Oct 2020', 'Nov 2020', 'Dec 2020']
 
     },
 
@@ -77,11 +79,108 @@ export class LineChart2Component implements OnInit {
     },
 
     series: [{
-        name: 'Recovery Rate',
-        data: [this.series],
+        name: this.Cname, //"Series",
+        data: this.Data,  //[10,20,30,40,50,60,80,93,66,52,14],
         lineWidth: 5,
         color: '#11698e'
     }],
-  };
+  };*/
+
+
+    }
+    $function(object: any)
+    {
+      var series : String ="";
+      let order = Object.entries(object[0]).sort();
+      var name = order[0][1];
+      var array = order[1][1];
+      var seriesNew: any;
+
+
+        series += '{ "name": "' + name + '",';
+				series += ' "data": [' + array + ']'+' },';
+
+
+      seriesNew = '[' + series.substr(0, series.length - 1) + ']';
+	    seriesNew = JSON.parse(seriesNew);
+
+      this.newChart = new Highcharts.Chart({
+        chart: {
+          plotBackgroundColor: '#eff8ff',
+          borderColor: '#03506f',
+          borderWidth: 3,
+          width: 600,
+          renderTo: 'container1',
+        },
+
+        credits: {
+          enabled: false
+        },
+
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
+        },
+
+        plotOptions: {
+          line: {
+            marker: {
+              enabled: false
+            },
+          },
+          series: {
+            lineWidth: 3
+        }
+        },
+
+        title: {
+          text: 'Outcome of Cases (Recovery) in India'
+        },
+
+        subtitle: {
+          text: 'Source: worldometers.info'
+        },
+
+        xAxis: {
+          title: {
+            text: 'Months'
+          },
+          categories: ['Feb 2020', 'Mar 2020', 'Apr 2020', 'May 2020', 'Jun 2020', 'Jul 2020', 'Aug 2020', 'Sep 2020', 'Oct 2020', 'Nov 2020', 'Dec 2020']
+        },
+
+        yAxis: {
+          title: {
+            text: 'Percent(%)'
+          },
+          labels: {
+            format: '{value}%'
+          },
+          max: 100,
+          min: 0
+        },
+
+        legend: {
+          align: 'right',
+          verticalAlign: 'middle',
+          layout: 'vertical',
+          borderWidth: 0
+        },
+
+        series : seriesNew,
+
+        responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+      });
     }
   }

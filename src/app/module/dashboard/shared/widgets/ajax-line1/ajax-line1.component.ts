@@ -1,5 +1,7 @@
+import { AjaxLine1Service } from './ajaxline1.service';
 import { Component, Input, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
+
 
 @Component({
   selector: 'app-ajax-line1',
@@ -7,18 +9,57 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./ajax-line1.component.css']
 })
 export class AjaxLine1Component implements OnInit {
-  chartOptions!: {};
-  @Input() data: any = [];
-  Highcharts = Highcharts;
+  chartOptions = {};
+  Object : any;
 
-  constructor() { }
+  constructor(private service : AjaxLine1Service) { }
 
   ngOnInit(): void {
-    this.chartOptions = {
+    this.service.getAll_2().subscribe(data=> {
+    this.Object = data;
+    this.$formChart(this.Object);
+  })
+}
+
+  $formChart(object: any){
+
+    let order= [];
+    for(var i = 0; i<object.length;i++)
+    {
+      order[i] = Object.entries(object[i]).sort();
+    }
+
+    var Cname = [];
+    var Array = [];
+
+    for(var i = 0; i<order.length; i++)
+    {
+      Cname[i] = order[i][0][1];
+    }
+
+    for(var i = 0; i<order.length; i++)
+    {
+      Array[i] = order[i][2][1];
+    }
+
+    var length = Cname.length;
+    var series = ""
+    for (var q = 0; q < length; q++) {
+				series += '{ "name": "' + Cname[q] + '",';
+				series += ' "data": [' + Array[q] + ']'+ ' },';
+			}
+
+    var seriesNew: any;
+
+    seriesNew = '[' + series.substr(0, series.length - 1) + ']';
+		seriesNew = JSON.parse(seriesNew);
+
+  this.chartOptions = new Highcharts.Chart({
     chart: {
       plotBackgroundColor: '#eff8ff',
       borderColor: '#03506f',
-      borderWidth: 3
+      borderWidth: 3,
+      renderTo: 'container4'
     },
 
     credits: {
@@ -58,14 +99,23 @@ export class AjaxLine1Component implements OnInit {
         borderWidth: 0
     },
 
-    series: [{
-        name: 'China',
-        data: [56.82, 93.58, 95.84, 94.33, 94.41, 94.42, 94.47, 94.55, 94.57, 94.60, 94.65, 94.71],
-        color: '#54e346'
-    }, {
-        name: 'India',
-        data: [100, 77.87, 88.71, 94.44, 95.13, 96.73, 97.75, 97.79, 98.17, 98.41, 98.51, 98.54],
-        color: '#eb5e0b'
-    }],
-  };
-}}
+    series: seriesNew,
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+  });
+}
+}

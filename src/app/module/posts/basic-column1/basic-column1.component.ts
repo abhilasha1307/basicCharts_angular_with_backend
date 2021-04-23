@@ -1,3 +1,4 @@
+import { basicCol1Service } from './basic-column1.service';
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 
@@ -8,19 +9,68 @@ import * as Highcharts from 'highcharts';
 })
 export class BasicColumn1Component implements OnInit {
 
-  chart!: {};
-  highcharts = Highcharts;
+  chart = {};
+  Object = {};
 
-  constructor() { }
+  constructor(private service : basicCol1Service) { }
 
   ngOnInit(): void {
-    this.chart = {
+    this.service.getAll_1().subscribe(data => {
+      this.Object = data;
+      this.$formChart(this.Object);
+    })
+}
+
+  $formChart(object:any)
+  {
+
+    let order= [];
+    for(var i = 0; i<object.length;i++)
+    {
+      order[i] = Object.entries(object[i]).sort();
+    }
+
+    var Cname = [];
+    var Array = [];
+
+    for(var i = 0; i<order.length; i++)
+    {
+      Cname[i] = order[i][0][1];
+    }
+
+    for(var i = 0; i<order.length; i++)
+    {
+      Array[i] = order[i][2][1];
+    }
+
+    var length = Cname.length;
+    var series = ""
+    for (var q = 0; q < length; q++) {
+				series += '{ "name": "' + Cname[q] + '",';
+				series += ' "data": [' + Array[q] + ']'+ ' },';
+			}
+
+    var seriesNew: any;
+
+    seriesNew = '[' + series.substr(0, series.length - 1) + ']';
+    //console.log(seriesNew);
+		seriesNew = JSON.parse(seriesNew);
+		//console.log(seriesNew);
+
+
+    this.chart = new Highcharts.Chart({
       chart: {
         type: 'column',
         borderColor: '#03506f',
         borderWidth: 3,
         plotBackgroundColor: '#eff8ff',
+        renderTo: 'container5',
+        width: 600
       },
+
+      credits: {
+        enabled: false
+    },
 
       title: {
         text: 'Total COVID-19 cases in China, India, Russia and USA'
@@ -66,23 +116,22 @@ export class BasicColumn1Component implements OnInit {
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'China',
-        data: [830, 58761, 80844, 82735, 82929, 83040, 83602, 84737, 85291, 85704, 86398, 86955, 89378]
+    series: seriesNew,
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
 
-    }, {
-        name: 'India',
-        data: [null, 3, 332, 33062, 190609, 529577, 1532135, 3619169, 6310267, 8182881, 9309871, 10188392, 10720971]
-
-    }, {
-        name: 'Russia',
-        data: [null, 2, 2337, 106498, 405843, 647849, 834499, 985346, 1176286, 1618116, 2295654, 3131550, 3774672]
-
-    }, {
-        name: 'USA',
-        data: [null, 15, 173368, 1086624, 1856560, 2762810, 4782831, 6270103, 7446364, 9483892, 13998001, 20024015, 26512193]
-
-    }]
-
-  };
-}}
+  })
+  }
+}

@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/module/dashboard/shared/shared.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { SharingColumnModule } from './../../module/posts/SharingColumn.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -20,6 +21,7 @@ import { SharingColumnModule } from './../../module/posts/SharingColumn.module';
     MatSidenavModule,
     MatDividerModule,
     SharingColumnModule,
+    HttpClientModule
   ]
 })
 export class DefaultModule { }

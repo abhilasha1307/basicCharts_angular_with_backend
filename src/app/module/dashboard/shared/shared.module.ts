@@ -19,7 +19,6 @@ import { AjaxLine2Component } from './widgets/ajax-line2/ajax-line2.component';
 import { LineChart2Component } from './widgets/line-chart2/line-chart2.component';
 
 
-
 @NgModule({
   declarations: [
     HeaderComponent,
