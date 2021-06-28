@@ -19,82 +19,15 @@ export class LineChart2Component implements OnInit {
       this.Object = data
       this.$function(this.Object)
     });
-
-  /*this.chart = {
-      chart: {
-      plotBackgroundColor: '#eff8ff',
-      height: (9 / 16 * 100) + '%',
-      borderColor: '#03506f',
-      borderWidth: 3,
-      width: 700
-    },
-
-    credits: {
-        enabled: false
-    },
-
-    tooltip: {
-            pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
-        },
-
-    plotOptions: {
-            line : {
-                marker: {
-                    enabled: false
-                }
-            }
-        },
-
-    title: {
-        text: 'Outcome of Cases (Recovery) in India'
-    },
-
-    subtitle: {
-        text: 'Source: worldometers.info'
-    },
-
-    xAxis: {
-      title : {
-            text: 'Months'
-        },
-          categories: ['Feb 2020', 'Mar 2020', 'Apr 2020', 'May 2020', 'Jun 2020', 'Jul 2020', 'Aug 2020', 'Sep 2020', 'Oct 2020', 'Nov 2020', 'Dec 2020']
-
-    },
-
-  yAxis: {
-        title: {
-            text: 'Percent(%)'
-        },
-        labels: {
-            format: '{value}%'
-        },
-        max: 100
-    },
-
-    legend: {
-        align: 'right',
-        verticalAlign: 'middle',
-        layout: 'vertical',
-        borderWidth: 0
-    },
-
-    series: [{
-        name: this.Cname, //"Series",
-        data: this.Data,  //[10,20,30,40,50,60,80,93,66,52,14],
-        lineWidth: 5,
-        color: '#11698e'
-    }],
-  };*/
-
-
     }
+
     $function(object: any)
     {
-      var series : String ="";
+      let series : String ="";
       let order = Object.entries(object[0]).sort();
-      var name = order[0][1];
-      var array = order[1][1];
-      var seriesNew: any;
+      let name = order[0][1];
+      let array = order[2][1];
+      let seriesNew: any;
 
 
         series += '{ "name": "' + name + '",';

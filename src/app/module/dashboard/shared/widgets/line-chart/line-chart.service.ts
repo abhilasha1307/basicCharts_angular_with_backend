@@ -11,6 +11,6 @@ export class LinechartService {
 
   getAll_4(): Observable<any>
   {
-    return this.http.get<any>('http://127.0.0.1:8080/getcovidline');
+    return this.http.get<any>('http://127.0.0.1:5000/covidline');
   }
 }

@@ -24,32 +24,32 @@ export class AjaxLine1Component implements OnInit {
   $formChart(object: any){
 
     let order= [];
-    for(var i = 0; i<object.length;i++)
+    for(let i = 0; i<object.length;i++)
     {
       order[i] = Object.entries(object[i]).sort();
     }
 
-    var Cname = [];
-    var Array = [];
+    let Cname = [];
+    let Array = [];
 
-    for(var i = 0; i<order.length; i++)
+    for(let i = 0; i<order.length; i++)
     {
       Cname[i] = order[i][0][1];
     }
 
-    for(var i = 0; i<order.length; i++)
+    for(let i = 0; i<order.length; i++)
     {
       Array[i] = order[i][2][1];
     }
 
-    var length = Cname.length;
-    var series = ""
+    let length = Cname.length;
+    let series = ""
     for (var q = 0; q < length; q++) {
 				series += '{ "name": "' + Cname[q] + '",';
 				series += ' "data": [' + Array[q] + ']'+ ' },';
 			}
 
-    var seriesNew: any;
+    let seriesNew: any;
 
     seriesNew = '[' + series.substr(0, series.length - 1) + ']';
 		seriesNew = JSON.parse(seriesNew);

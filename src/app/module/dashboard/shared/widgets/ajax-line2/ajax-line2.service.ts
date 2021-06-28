@@ -12,7 +12,7 @@ export class AjaxLine2Service {
 
   getAll_3(): Observable<any>
   {
-    return this.http.get<any>('http://127.0.0.1:8080/getajax2');
+    return this.http.get<any>('http://127.0.0.1:5000/recovery2');
   }
 
 }

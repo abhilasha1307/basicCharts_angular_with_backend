@@ -11,7 +11,7 @@ export class Linechart2Service {
 
   getAll_1(): Observable<Object>
   {
-    return this.http.get<Object>('http://127.0.0.1:8080/getoutcomeline');
+    return this.http.get<Object>('http://127.0.0.1:5000/recoveryoutcome');
   }
 
 }

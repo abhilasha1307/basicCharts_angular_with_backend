@@ -12,7 +12,7 @@ export class basicCol1Service {
 
   getAll_1(): Observable<any>
   {
-    return this.http.get<any>('http://127.0.0.1:8080/gettotalcases');
+    return this.http.get<any>('http://127.0.0.1:5000/totalcases');
   }
 
 }
